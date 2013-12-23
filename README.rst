@@ -2,6 +2,9 @@
  stanczyk
 ==========
 
+This is a client for the game-shaped exercises which are part of
+Crypto 101, the introductory book on cryptography by lvh_.
+
 .. image:: https://upload.wikimedia.org/wikipedia/commons/d/d6/Matejko_Sta%C5%84czyk.jpg
 
 Testing and documentation
@@ -32,6 +35,8 @@ legend; I picked Stańczyk because:
    more than its peers.
 3. Poland is awesome.
 
+
+.. _lvh: https://twitter.com/lvh/
 .. _tox: https://testrun.org/tox/
 .. _`Stańczyk`: https://en.wikipedia.org/wiki/Sta%C5%84czyk
 .. _merlyn: https://github.com/crypto101/merlyn
