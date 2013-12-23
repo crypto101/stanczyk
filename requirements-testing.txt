@@ -1,0 +1,9 @@
+# Test coverage
+coverage
+
+# Debugging niceties
+pudb
+ipython
+
+# Packaging QA
+pyroma
