@@ -1,3 +1,4 @@
+from stanczyk import namespace
 from twisted.conch.stdio import ConsoleManhole
 
 CTRL_K = "\x0b" # vertical tab
@@ -42,10 +43,7 @@ class Protocol(LineKillingConsoleManhole):
 
 
 
-namespace = {}
-
-
-
 MOTD = """
 Welcome to the Crypto 101 console client!
+
 """

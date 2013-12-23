@@ -1,4 +1,5 @@
-from stanczyk.console import LineKillingConsoleManhole, MOTD, Protocol, namespace
+from stanczyk import namespace
+from stanczyk.console import LineKillingConsoleManhole, MOTD, Protocol
 from twisted.conch.insults.insults import ServerProtocol
 from twisted.test.proto_helpers import StringTransport
 from twisted.trial.unittest import SynchronousTestCase
