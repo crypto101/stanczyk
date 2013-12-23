@@ -22,7 +22,7 @@ Initial version.
 Name and spelling
 =================
 
-`stanczyk` is named after `Stańczyk`_, a (historical) famous Polish
+``stanczyk`` is named after `Stańczyk`_, a (historical) famous Polish
 court jester. Other Crypto 101 projects (such as merlyn_, arthur_ and
 clarent_) were already named after things from the court of Arthurian
 legend; I picked Stańczyk because:
