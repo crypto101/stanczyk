@@ -34,5 +34,5 @@ legend; I picked Stańczyk because:
 
 .. _`Stańczyk`: https://en.wikipedia.org/wiki/Sta%C5%84czyk
 .. _merlyn: https://github.com/crypto101/merlyn
+.. _arthur: https://github.com/crypto101/arthur
 .. _clarent: https://github.com/crypto101/clarent
-.. _merlyn: https://github.com/crypto101/arthur
