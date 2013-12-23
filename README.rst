@@ -5,7 +5,7 @@
 This is a client for the game-shaped exercises which are part of
 Crypto 101, the introductory book on cryptography by lvh_.
 
-.. image:: https://upload.wikimedia.org/wikipedia/commons/d/d6/Matejko_Sta%C5%84czyk.jpg
+.. image:: https://dl.dropboxusercontent.com/u/38476311/Logos/stanczyk.jpg
 
 Testing and documentation
 =========================
