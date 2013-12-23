@@ -1,0 +1,8 @@
+[run]
+branch = True
+source =
+    stanczyk
+
+[report]
+exclude_lines =
+    pragma: no cover
