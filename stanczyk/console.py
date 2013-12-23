@@ -16,3 +16,36 @@ class LineKillingConsoleManhole(ConsoleManhole):
     def _killLine(self):
         self.terminal.eraseToLineEnd()
         del self.lineBuffer[self.lineBufferIndex:]
+
+
+
+class Protocol(LineKillingConsoleManhole):
+    ps = "(Crypto101) >>> ", "(Crypto101) ... "
+
+    def __init__(self):
+        LineKillingConsoleManhole.__init__(self, namespace)
+
+
+    def connectionMade(self):
+        LineKillingConsoleManhole.connectionMade(self)
+        self._startSession()
+
+
+    def _startSession(self):
+        """Clears terminal, writes a MOTD, and draws the input line.
+
+        """
+        self.terminal.eraseDisplay()
+        self.terminal.cursorHome()
+        self.terminal.write(MOTD)
+        self.drawInputLine()
+
+
+
+namespace = {}
+
+
+
+MOTD = """
+Welcome to the Crypto 101 console client!
+"""
