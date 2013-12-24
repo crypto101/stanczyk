@@ -28,6 +28,10 @@ class Protocol(LineKillingConsoleManhole):
 
 
     def connectionMade(self):
+        """Does ``LineKillingConsoleManhole``'s connection made routine, then
+        starts a session.
+
+        """
         LineKillingConsoleManhole.connectionMade(self)
         self._startSession()
 
