@@ -23,7 +23,7 @@ class LineKillingConsoleManhole(ConsoleManhole):
 class Protocol(LineKillingConsoleManhole):
     ps = "(Crypto101) >>> ", "(Crypto101) ... "
 
-    def __init__(self):
+    def __init__(self, namespace=namespace):
         LineKillingConsoleManhole.__init__(self, namespace)
 
 
