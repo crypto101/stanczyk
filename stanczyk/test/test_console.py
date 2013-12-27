@@ -1,4 +1,4 @@
-from stanczyk import namespace
+from stanczyk import consoleFunctions
 from stanczyk.console import LineKillingConsoleManhole, MOTD, Protocol
 from twisted.conch.insults.insults import ServerProtocol
 from twisted.test.proto_helpers import StringTransport
@@ -63,11 +63,23 @@ class ProtocolLineKillingTests(LineKillingTests):
         self.assertEqual(afterHome, motdWithPrompt)
 
 
-    def test_namespace(self):
-        """The manhole is created with the console's namespace.
+    def test_consoleFunctions(self):
+        """The manhole's namespace contains itself, under the ``"manhole"``
+        name, as well as all of the console functions under their own
+        names, partially applied with the manhole's namespace.
 
         """
-        self.assertEqual(self.protocol.namespace, namespace)
+        expectedKwargs = {"namespace": self.protocol.namespace}
+        gotFuncs = set()
+        for name, obj in self.protocol.namespace.iteritems():
+            if name == "manhole":
+                self.assertEqual(obj, self.protocol)
+            else:
+                self.assertEqual(obj.func.__name__, name)
+                self.assertEqual(obj.keywords, expectedKwargs)
+                gotFuncs.add(obj.func)
+
+        self.assertEqual(gotFuncs, set(consoleFunctions))
 
 
 
