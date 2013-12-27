@@ -59,8 +59,7 @@ class ProtocolLineKillingTests(LineKillingTests):
         _beforeClear, afterClear = allBytes.split(ERASE_DISPLAY, 1)
         beforeHome, afterHome = afterClear.split(CURSOR_HOME, 1)
         self.assertEqual(beforeHome, "")
-        motdWithPrompt = "\r\n".join(MOTD.split("\n")) + Protocol.ps[0]
-        self.assertEqual(afterHome, motdWithPrompt)
+        self.assertEqual(afterHome, expectedAfterHome)
 
 
     def test_consoleFunctions(self):
@@ -90,4 +89,4 @@ expectedAfterHome = "\r\n".join((MOTD + """
 The following commands are available:
 connect: Connects to the Crypto 101 exercise server.
 connectProxy: Proxy connections server with the given identifier.
-""").split("\n")) + Protocol.ps[0]
+""").split("\n")) + "\r\n" + Protocol.ps[0]
