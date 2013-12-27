@@ -1,1 +1,3 @@
 twisted==13.2.0
+txampext==0.0.11
+clarent==0.0.9
