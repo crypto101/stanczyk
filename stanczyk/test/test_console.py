@@ -73,3 +73,9 @@ class ProtocolLineKillingTests(LineKillingTests):
 
 ERASE_DISPLAY = '\x1b[2J'
 CURSOR_HOME = '\x1b[H'
+
+expectedAfterHome = "\r\n".join((MOTD + """
+The following commands are available:
+connect: Connects to the Crypto 101 exercise server.
+connectProxy: Proxy connections server with the given identifier.
+""").split("\n")) + Protocol.ps[0]

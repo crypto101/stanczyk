@@ -1,4 +1,6 @@
-from stanczyk import namespace
+from collections import OrderedDict
+from functools import partial
+from stanczyk import consoleFunctions
 from twisted.conch.stdio import ConsoleManhole
 
 CTRL_K = "\x0b" # vertical tab
@@ -23,8 +25,12 @@ class LineKillingConsoleManhole(ConsoleManhole):
 class Protocol(LineKillingConsoleManhole):
     ps = "(Crypto101) >>> ", "(Crypto101) ... "
 
-    def __init__(self, namespace=namespace):
-        LineKillingConsoleManhole.__init__(self, namespace)
+    def __init__(self):
+        LineKillingConsoleManhole.__init__(self)
+
+        self.namespace = namespace = OrderedDict({"manhole": self})
+        for f in consoleFunctions:
+            namespace[f.__name__] = partial(f, namespace=namespace)
 
 
     def connectionMade(self):
@@ -43,6 +49,15 @@ class Protocol(LineKillingConsoleManhole):
         self.terminal.eraseDisplay()
         self.terminal.cursorHome()
         self.terminal.write(MOTD)
+
+        self.terminal.write("\nThe following commands are available:\n")
+        for name, obj in self.namespace.iteritems():
+            if obj is self:
+                continue
+            firstLine = obj.func.__doc__.split("\n", 1)[0]
+            self.terminal.write("{}: {}\n".format(name, firstLine))
+        self.terminal.write("\n")
+
         self.drawInputLine()
 
 
