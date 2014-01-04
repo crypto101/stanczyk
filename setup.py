@@ -35,7 +35,7 @@ setup(name=packageName,
       zip_safe=True,
 
       license='ISC',
-      keywords="crypto urwid twisted",
+      keywords="crypto twisted",
       classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Console",
