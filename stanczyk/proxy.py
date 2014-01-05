@@ -3,7 +3,8 @@ from txampext.multiplexing import ProxyingFactory
 
 
 def connectProxy(identifier, namespace, reactor=reactor):
-    """Proxy connections server with the given identifier.
+    """Start listening on a local port; connections will be proxied to the
+    virtual server with the given identifier.
 
     """
     remote = namespace.get("remote")

@@ -5,8 +5,8 @@ from txampext import multiplexing
 
 
 class Protocol(multiplexing.ProxyingAMPLocator, amp.AMP):
-    """
-    Stanczyk's client AMP protocol.
+    """Stanczyk's client AMP protocol.
+
     """
 
 
