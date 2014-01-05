@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from functools import partial, update_wrapper
+from inspect import getargspec
 from stanczyk import consoleFunctions
 from texttable import Texttable
 from twisted.conch.stdio import ConsoleManhole
@@ -55,12 +56,14 @@ class Protocol(LineKillingConsoleManhole):
         self.terminal.write("\nThe following commands are available:\n")
 
         table = Texttable()
-        table.header(["Name", "Description"])
+        table.header(["Command", "Description"])
         for name, obj in self.namespace.iteritems():
             if obj is self:
                 continue
             shortDoc = _extractFirstParagraphOfDocstring(obj)
-            table.add_row([name, shortDoc])
+
+            command = "{}({})".format(name, ", ".join(_extractArgs(obj.func)))
+            table.add_row([command, shortDoc])
 
         # Ugh! I'm only giving Texttable bytes; why is it giving me unicode?
         self.terminal.write(table.draw().encode("utf-8"))
@@ -97,3 +100,15 @@ def _extractFirstParagraphOfDocstring(f):
     firstParagraph = f.__doc__.split("\n\n", 1)[0]
     lines = [line.strip() for line in firstParagraph.split("\n")]
     return " ".join(lines)
+
+
+def _extractArgs(f):
+    """Extracts all mandatory args of the function, minus the "namespace" argument.
+
+    """
+    spec = getargspec(f)
+    if spec.defaults is not None: # Chop off all of the optional args
+        mandatory = spec.args[:-len(spec.defaults)]
+    else: # There are no optional args, so all args are mandatory
+        mandatory = spec.args
+    return tuple(a for a in mandatory if a != "namespace")

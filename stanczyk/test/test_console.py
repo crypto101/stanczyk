@@ -1,5 +1,5 @@
 from stanczyk import consoleFunctions
-from stanczyk.console import LineKillingConsoleManhole, Protocol
+from stanczyk.console import LineKillingConsoleManhole, Protocol, _extractArgs
 from twisted.conch.insults.insults import ServerProtocol
 from twisted.test.proto_helpers import StringTransport
 from twisted.trial.unittest import SynchronousTestCase
@@ -91,15 +91,47 @@ Welcome to the Crypto 101 console client!
 
 The following commands are available:
 +--------------------------------------+--------------------------------------+
-|                 Name                 |             Description              |
+|               Command                |             Description              |
 +======================================+======================================+
-| connect                              | Connects to the Crypto 101 exercise  |
+| connect()                            | Connects to the Crypto 101 exercise  |
 |                                      | server.                              |
 +--------------------------------------+--------------------------------------+
-| connectProxy                         | Start listening on some free local   |
+| connectProxy(identifier)             | Start listening on some free local   |
 |                                      | port; connections will be proxied to |
 |                                      | the virtual server with the given    |
 |                                      | identifier.                          |
 +--------------------------------------+--------------------------------------+
 
 (Crypto101) >>> """.split("\n"))
+
+
+
+class ExtractArgsTests(SynchronousTestCase):
+    def test_noArgs(self):
+        """Extracting the args from a function with only an implicit namespace
+        argument results in the empty tuple.
+
+        """
+        def f(namespace): pass
+        self.assertEqual(_extractArgs(f), ())
+
+
+    def test_noMandatoryArgs(self):
+        """Extracting the args from a function with an implicit namespace
+        argument as well as some optional arguments results in the
+        empty tuple.
+
+        """
+        x = object()
+        def f(namespace, a=x, b=x, c=x): pass
+        self.assertEqual(_extractArgs(f), ())
+
+
+    def test_someMandatoryArgs(self):
+        """Extracting the args from a function with an implicit namespace
+        argument as well as some positional arguments results in the
+        empty tuple.
+
+        """
+        def f(namespace, a, b, c): pass
+        self.assertEqual(_extractArgs(f), ("a", "b", "c"))
