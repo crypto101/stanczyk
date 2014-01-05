@@ -1,5 +1,5 @@
 from stanczyk import consoleFunctions
-from stanczyk.console import LineKillingConsoleManhole, MOTD, Protocol
+from stanczyk.console import LineKillingConsoleManhole, Protocol
 from twisted.conch.insults.insults import ServerProtocol
 from twisted.test.proto_helpers import StringTransport
 from twisted.trial.unittest import SynchronousTestCase
@@ -85,8 +85,17 @@ class ProtocolLineKillingTests(LineKillingTests):
 ERASE_DISPLAY = '\x1b[2J'
 CURSOR_HOME = '\x1b[H'
 
-expectedAfterHome = "\r\n".join((MOTD + """
+expectedAfterHome = "\r\n".join("""
+Welcome to the Crypto 101 console client!
+
+
 The following commands are available:
-connect: Connects to the Crypto 101 exercise server.
-connectProxy: Proxy connections server with the given identifier.
-""").split("\n")) + "\r\n" + Protocol.ps[0]
++--------------+-----------------------------------------------------+
+|     Name     |                     Description                     |
++==============+=====================================================+
+| connect      | Connects to the Crypto 101 exercise server.         |
++--------------+-----------------------------------------------------+
+| connectProxy | Proxy connections server with the given identifier. |
++--------------+-----------------------------------------------------+
+
+(Crypto101) >>> """.split("\n"))

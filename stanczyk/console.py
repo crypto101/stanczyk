@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from functools import partial
 from stanczyk import consoleFunctions
+from texttable import Texttable
 from twisted.conch.stdio import ConsoleManhole
 
 CTRL_K = "\x0b" # vertical tab
@@ -51,12 +52,20 @@ class Protocol(LineKillingConsoleManhole):
         self.terminal.write(MOTD)
 
         self.terminal.write("\nThe following commands are available:\n")
+
+        table = Texttable()
+        table.header(["Name", "Description"])
         for name, obj in self.namespace.iteritems():
             if obj is self:
                 continue
             firstLine = obj.func.__doc__.split("\n", 1)[0]
-            self.terminal.write("{}: {}\n".format(name, firstLine))
-        self.terminal.write("\n")
+            table.add_row([name, firstLine])
+
+        # Ugh! I'm only giving Texttable bytes; why is it giving me unicode?
+        self.terminal.write(table.draw().encode("utf-8"))
+
+        self.terminal.nextLine()
+        self.terminal.nextLine()
 
         self.drawInputLine()
 
