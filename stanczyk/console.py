@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from functools import partial
+from functools import partial, update_wrapper
 from stanczyk import consoleFunctions
 from texttable import Texttable
 from twisted.conch.stdio import ConsoleManhole
@@ -31,7 +31,8 @@ class Protocol(LineKillingConsoleManhole):
 
         self.namespace = namespace = OrderedDict({"manhole": self})
         for f in consoleFunctions:
-            namespace[f.__name__] = partial(f, namespace=namespace)
+            partiallyApplied = partial(f, namespace=namespace)
+            namespace[f.__name__] = update_wrapper(partiallyApplied, f)
 
 
     def connectionMade(self):
@@ -58,7 +59,7 @@ class Protocol(LineKillingConsoleManhole):
         for name, obj in self.namespace.iteritems():
             if obj is self:
                 continue
-            firstLine = obj.func.__doc__.split("\n", 1)[0]
+            firstLine = obj.__doc__.split("\n", 1)[0]
             table.add_row([name, firstLine])
 
         # Ugh! I'm only giving Texttable bytes; why is it giving me unicode?

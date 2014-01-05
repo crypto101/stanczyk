@@ -74,7 +74,7 @@ class ProtocolLineKillingTests(LineKillingTests):
             if name == "manhole":
                 self.assertEqual(obj, self.protocol)
             else:
-                self.assertEqual(obj.func.__name__, name)
+                self.assertEqual(obj.__name__, name)
                 self.assertEqual(obj.keywords, expectedKwargs)
                 gotFuncs.add(obj.func)
 
