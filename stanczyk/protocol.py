@@ -19,11 +19,11 @@ class Factory(protocol.ReconnectingClientFactory):
 
 
 
-def connect(namespace, reactor=reactor):
+def connect(namespace, _reactor=reactor):
     """Connects to the Crypto 101 exercise server.
 
     """
-    endpoint = _makeEndpoint(reactor)
+    endpoint = _makeEndpoint(_reactor)
     d = endpoint.connect(Factory())
     d.addCallback(_storeRemote, namespace=namespace)
 
