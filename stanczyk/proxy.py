@@ -2,7 +2,7 @@ from twisted.internet import endpoints, reactor
 from txampext.multiplexing import ProxyingFactory
 
 
-def connectProxy(identifier, namespace, reactor=reactor):
+def connectProxy(identifier, namespace, _reactor=reactor):
     """Start listening on some free local port; connections will be
     proxied to the virtual server with the given identifier.
 
@@ -13,7 +13,7 @@ def connectProxy(identifier, namespace, reactor=reactor):
                            "Call ``connect``.")
 
     factory = ProxyingFactory(remote, identifier)
-    endpoint = endpoints.TCP4ServerEndpoint(reactor, 0, interface="localhost")
+    endpoint = endpoints.TCP4ServerEndpoint(_reactor, 0, interface="localhost")
     d = endpoint.listen(factory)
     d.addCallback(_listening, identifier, namespace)
     return None
