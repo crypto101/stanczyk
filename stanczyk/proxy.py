@@ -14,14 +14,14 @@ def connectProxy(identifier, namespace, reactor=reactor):
     factory = ProxyingFactory(remote, identifier)
     endpoint = endpoints.TCP4ServerEndpoint(reactor, 0, interface="localhost")
     d = endpoint.listen(factory)
-
-    d.addCallback(_listening, namespace=namespace)
-    return d
-
+    d.addCallback(_listening, identifier, namespace)
+    return None
 
 
-def _listening(listeningPort, namespace):
+def _listening(listeningPort, identifier, namespace):
     """Started listening; report success to terminal.
 
     """
-    return listeningPort # TODO: Report success
+    host = listeningPort.getHost()
+    template = "{id} is now listening on {h.host}:{h.port}"
+    namespace["manhole"].writeLine(template.format(h=host, id=identifier))

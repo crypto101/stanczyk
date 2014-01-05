@@ -61,6 +61,16 @@ class Protocol(LineKillingConsoleManhole):
         self.drawInputLine()
 
 
+    def writeLine(self, line):
+        """
+        Writes a line to the terminal, and then redraws the input line.
+        """
+        self.terminal.eraseToLineBeginning()
+        self.terminal.write(line)
+        self.terminal.nextLine()
+        self.drawInputLine()
+
+
 
 MOTD = """
 Welcome to the Crypto 101 console client!

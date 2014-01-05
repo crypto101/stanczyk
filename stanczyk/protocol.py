@@ -26,15 +26,16 @@ def connect(namespace, reactor=reactor):
     endpoint = _makeEndpoint(reactor)
     d = endpoint.connect(Factory())
     d.addCallback(_storeRemote, namespace=namespace)
-    return d
+
+    return None # don't return the deferred, or the REPL will display it
 
 
 def _storeRemote(remote, namespace):
-    """Stores the remote in the namespace; returns success.
+    """Stores the remote in the namespace; reports success to console.
 
     """
     namespace["remote"] = remote
-
+    namespace["manhole"].writeLine("Connected to the exercise server!")
 
 
 def _makeEndpoint(reactor):
