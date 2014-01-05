@@ -59,8 +59,8 @@ class Protocol(LineKillingConsoleManhole):
         for name, obj in self.namespace.iteritems():
             if obj is self:
                 continue
-            firstLine = obj.__doc__.split("\n", 1)[0]
-            table.add_row([name, firstLine])
+            shortDoc = _extractFirstParagraphOfDocstring(obj)
+            table.add_row([name, shortDoc])
 
         # Ugh! I'm only giving Texttable bytes; why is it giving me unicode?
         self.terminal.write(table.draw().encode("utf-8"))
@@ -86,3 +86,14 @@ MOTD = """
 Welcome to the Crypto 101 console client!
 
 """
+
+
+def _extractFirstParagraphOfDocstring(f):
+    """Extracts the first paragraph of the docstring of the given
+    function.
+
+    Also fixes extraneous whitespace due to indentation.
+    """
+    firstParagraph = f.__doc__.split("\n\n", 1)[0]
+    lines = [line.strip() for line in firstParagraph.split("\n")]
+    return " ".join(lines)

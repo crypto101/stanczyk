@@ -90,12 +90,16 @@ Welcome to the Crypto 101 console client!
 
 
 The following commands are available:
-+--------------+-----------------------------------------------------+
-|     Name     |                     Description                     |
-+==============+=====================================================+
-| connect      | Connects to the Crypto 101 exercise server.         |
-+--------------+-----------------------------------------------------+
-| connectProxy | Proxy connections server with the given identifier. |
-+--------------+-----------------------------------------------------+
++--------------------------------------+--------------------------------------+
+|                 Name                 |             Description              |
++======================================+======================================+
+| connect                              | Connects to the Crypto 101 exercise  |
+|                                      | server.                              |
++--------------------------------------+--------------------------------------+
+| connectProxy                         | Start listening on some free local   |
+|                                      | port; connections will be proxied to |
+|                                      | the virtual server with the given    |
+|                                      | identifier.                          |
++--------------------------------------+--------------------------------------+
 
 (Crypto101) >>> """.split("\n"))
