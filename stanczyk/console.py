@@ -61,8 +61,7 @@ class Protocol(LineKillingConsoleManhole):
             if obj is self:
                 continue
             shortDoc = _extractFirstParagraphOfDocstring(obj)
-
-            command = "{}({})".format(name, ", ".join(_extractArgs(obj.func)))
+            command = _formatFunction(obj.func)
             table.add_row([command, shortDoc])
 
         # Ugh! I'm only giving Texttable bytes; why is it giving me unicode?
@@ -103,12 +102,30 @@ def _extractFirstParagraphOfDocstring(f):
 
 
 def _extractArgs(f):
-    """Extracts all mandatory args of the function, minus the "namespace" argument.
+    """Extracts all mandatory args of the function, minus the "namespace"
+    argument, as well as all the public optional args of the function.
+    Public args are defined as args that don't start with an underscore.
 
     """
     spec = getargspec(f)
+
     if spec.defaults is not None: # Chop off all of the optional args
         mandatory = spec.args[:-len(spec.defaults)]
+        optionalNames = spec.args[-len(spec.defaults):]
+        optional = zip(optionalNames, spec.defaults)
     else: # There are no optional args, so all args are mandatory
         mandatory = spec.args
-    return tuple(a for a in mandatory if a != "namespace")
+        optional = []
+
+    mandatory = [a for a in mandatory if a != "namespace"]
+    optional = [(n, v) for (n, v) in optional if not n.startswith("_")]
+    return mandatory, optional
+
+
+def _formatFunction(f):
+    """Pretty-format the function.
+
+    """
+    mandatory, optional = _extractArgs(f)
+    argSpecs = mandatory + ["{}={}".format(n, v) for (n, v) in optional]
+    return "{}({})".format(f.__name__, ", ".join(argSpecs))

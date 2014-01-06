@@ -109,29 +109,48 @@ The following commands are available:
 class ExtractArgsTests(SynchronousTestCase):
     def test_noArgs(self):
         """Extracting the args from a function with only an implicit namespace
-        argument results in the empty tuple.
+        argument results in an empty list of mandatory arguments and
+        an empty list of optional arguments.
 
         """
         def f(namespace): pass
-        self.assertEqual(_extractArgs(f), ())
+        mandatory, optional = _extractArgs(f)
+        self.assertEqual(mandatory, [])
+        self.assertEqual(optional, [])
 
 
     def test_noMandatoryArgs(self):
         """Extracting the args from a function with an implicit namespace
-        argument as well as some optional arguments results in the
-        empty tuple.
+        argument as well as some optional arguments (but no mandatory
+        arguments) works correctly.
 
         """
-        x = object()
-        def f(namespace, a=x, b=x, c=x): pass
-        self.assertEqual(_extractArgs(f), ())
+        def f(namespace, a=1, b=2, c=3): pass
+
+        mandatory, optional = _extractArgs(f)
+        self.assertEqual(mandatory, [])
+        self.assertEqual(optional, [("a", 1), ("b", 2), ("c", 3)])
 
 
     def test_someMandatoryArgs(self):
         """Extracting the args from a function with an implicit namespace
-        argument as well as some positional arguments results in the
-        empty tuple.
+        argument as well as some mandatory arguments works correctly.
 
         """
         def f(namespace, a, b, c): pass
-        self.assertEqual(_extractArgs(f), ("a", "b", "c"))
+        mandatory, optional = _extractArgs(f)
+        self.assertEqual(mandatory, ["a", "b", "c"])
+        self.assertEqual(optional, [])
+
+
+    def test_bothMandatoryAndOptionalArgs(self):
+        """Extracting the args from a function with an implicit namespace
+        argument as well as both mandatory and optional arguments
+        works correctly.
+
+        Optional arguments that start with an underscore are ignored.
+        """
+        def f(namespace, a, b, c, d=1, _e=2): pass
+        mandatory, optional = _extractArgs(f)
+        self.assertEqual(mandatory, ["a", "b", "c"])
+        self.assertEqual(optional, [("d", 1)])
