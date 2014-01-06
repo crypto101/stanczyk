@@ -1,3 +1,4 @@
+from stanczyk.util import _getRemote
 from twisted.internet import endpoints, reactor
 from txampext.multiplexing import ProxyingFactory
 
@@ -7,13 +8,8 @@ def connectProxy(namespace, identifier, _reactor=reactor):
     proxied to the virtual server with the given identifier.
 
     """
-    remote = namespace.get("remote")
-    if remote is None:
-        raise RuntimeError("You are not connected to the exercise server. "
-                           "Call ``connect``.")
-
-    factory = ProxyingFactory(remote, identifier)
     endpoint = endpoints.TCP4ServerEndpoint(_reactor, 0, interface="localhost")
+    factory = ProxyingFactory(_getRemote(namespace), identifier)
     d = endpoint.listen(factory)
     d.addCallback(_listening, namespace, identifier)
     return None
