@@ -74,8 +74,8 @@ class Protocol(LineKillingConsoleManhole):
 
 
     def writeLine(self, line):
-        """
-        Writes a line to the terminal, and then redraws the input line.
+        """Writes a line to the terminal, and then redraws the input line.
+
         """
         self.terminal.eraseToLineBeginning()
         self.terminal.write(line)
