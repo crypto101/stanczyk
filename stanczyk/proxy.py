@@ -21,4 +21,4 @@ def _listening(listeningPort, namespace, identifier):
     """
     host = listeningPort.getHost()
     template = "{id} is now listening on {h.host}:{h.port}"
-    namespace["manhole"].writeLine(template.format(h=host, id=identifier))
+    namespace["manhole"].overwriteLine(template.format(h=host, id=identifier))

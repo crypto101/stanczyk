@@ -35,7 +35,7 @@ def _storeRemote(remote, namespace):
 
     """
     namespace["remote"] = remote
-    namespace["manhole"].writeLine("Connected to the exercise server!")
+    namespace["manhole"].overwriteLine("Connected to the exercise server!")
 
 
 def _makeEndpoint(reactor):

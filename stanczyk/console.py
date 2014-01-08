@@ -4,6 +4,7 @@ from inspect import getargspec
 from stanczyk import consoleFunctions
 from texttable import Texttable
 from twisted.conch.stdio import ConsoleManhole
+from twisted.internet.defer import inlineCallbacks
 
 CTRL_K = "\x0b" # vertical tab
 
@@ -73,11 +74,15 @@ class Protocol(LineKillingConsoleManhole):
         self.drawInputLine()
 
 
-    def writeLine(self, line):
-        """Writes a line to the terminal, and then redraws the input line.
+    @inlineCallbacks
+    def overwriteLine(self, line):
+        """Overwrites the current line of the terminal with the given line,
+        and then redraws the input line.
 
         """
-        self.terminal.eraseToLineBeginning()
+        self.terminal.eraseLine()
+        _x, y = yield self.terminal.reportCursorPosition()
+        self.terminal.cursorPosition(0, y)
         self.terminal.write(line)
         self.terminal.nextLine()
         self.drawInputLine()
