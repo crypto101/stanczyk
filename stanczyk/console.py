@@ -83,6 +83,7 @@ class Protocol(LineKillingConsoleManhole):
         yield self.killLine()
         self.terminal.write(line)
         self.terminal.nextLine()
+        yield self.killLine()
         self.drawInputLine()
 
 
@@ -92,9 +93,9 @@ class Protocol(LineKillingConsoleManhole):
         it.
 
         """
-        self.terminal.eraseLine()
         _x, y = yield self.terminal.reportCursorPosition()
         self.terminal.cursorPosition(0, y)
+        self.terminal.eraseLine()
 
 
 
