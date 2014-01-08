@@ -80,12 +80,21 @@ class Protocol(LineKillingConsoleManhole):
         and then redraws the input line.
 
         """
-        self.terminal.eraseLine()
-        _x, y = yield self.terminal.reportCursorPosition()
-        self.terminal.cursorPosition(0, y)
+        yield self.killLine()
         self.terminal.write(line)
         self.terminal.nextLine()
         self.drawInputLine()
+
+
+    @inlineCallbacks
+    def killLine(self):
+        """Erases the current line and moves the cursor to the beginning of
+        it.
+
+        """
+        self.terminal.eraseLine()
+        _x, y = yield self.terminal.reportCursorPosition()
+        self.terminal.cursorPosition(0, y)
 
 
 
