@@ -3,7 +3,7 @@ from twisted.internet import endpoints, reactor
 from txampext.multiplexing import ProxyingFactory
 
 
-def connectProxy(namespace, identifier, _reactor=reactor):
+def connectProxy(identifier, namespace, _reactor=reactor):
     """Start listening on some free local port; connections will be
     proxied to the virtual server with the given identifier.
 
