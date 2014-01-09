@@ -8,14 +8,19 @@ class Protocol(multiplexing.ProxyingAMPLocator, amp.AMP):
     """Stanczyk's client AMP protocol.
 
     """
+    @property
+    def namespace(self):
+        return self.factory.namespace
+
+
     @exercise.NotifySolved.responder
     def notifySolved(self, identifier, title):
         """Notifies the user that they have completed an exercise.
 
         """
-        manhole = self.factory.namespace["manhole"]
         template = "\nCongratulations! You have solved the {} excercise ({})."
-        manhole.overwriteLine(template.format(identifier, title))
+        line = template.format(identifier, title)
+        self.namespace["manhole"].overwriteLine(line)
         return {}
 
 
@@ -27,7 +32,6 @@ class Factory(protocol.ReconnectingClientFactory):
     protocol = Protocol
 
     def __init__(self, namespace):
-        protocol.ReconnectingClientFactory.__init__(self)
         self.namespace = namespace
 
 
