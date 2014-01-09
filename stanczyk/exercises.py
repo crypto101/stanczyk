@@ -48,5 +48,5 @@ def _displayExerciseDetails(response, namespace):
     line = "=" * len(title)
     header = "\n".join([line, title, line])
 
-    content = "\n" + header + "\n" + response["description"]
+    content = "\n\n" + header + "\n\n" + response["description"]
     namespace["manhole"].overwriteLine(content.encode("utf-8"))
