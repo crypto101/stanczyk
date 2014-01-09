@@ -96,6 +96,12 @@ The following commands are available:
 | connect()                            | Connects to the Crypto 101 exercise  |
 |                                      | server.                              |
 +--------------------------------------+--------------------------------------+
+| getExercises(solved=False)           | Gets some exercises that are         |
+|                                      | currently avaialble to you.          |
++--------------------------------------+--------------------------------------+
+| getExerciseDetails(identifier)       | Shows the detailed description of a  |
+|                                      | particular excerise.                 |
++--------------------------------------+--------------------------------------+
 | connectProxy(identifier)             | Start listening on some free local   |
 |                                      | port; connections will be proxied to |
 |                                      | the virtual server with the given    |
