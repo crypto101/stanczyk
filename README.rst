@@ -5,6 +5,9 @@
 This is a client for the game-shaped exercises which are part of
 Crypto 101, the introductory book on cryptography by lvh_.
 
+.. image:: https://travis-ci.org/crypto101/stanczyk.png
+.. iamge:: https://coveralls.io/repos/crypto101/stanczyk/badge.png
+
 .. image:: https://dl.dropboxusercontent.com/u/38476311/Logos/stanczyk.jpg
 
 Testing and documentation
