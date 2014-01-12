@@ -20,6 +20,25 @@ The long version: see the extra notes for merlyn_.
 Changelog
 =========
 
+0.0.2
+-----
+
+A much nicer version you can actually play around with.
+
+- stanczyk is now continuously tested, thanks to Travis CI. Coverage
+  is measured thanks to Coveralls.
+- Solution notification: when an exercise is solved, stanczyk will say
+  something.
+- Exercise listing and exercise details listing commands.
+- Proxy commands. You can now connect to remote virtual servers.
+- Nicer terminal line overwriting routines, which makes it less
+  obvious that stuff is happening asynchronously (sometimes).
+- When starting, a nice table is displayed with all of the available
+  commands, plus a short description of what they do.
+
+I've made a `short video <http://youtu.be/W_jEIvugwes>`_ that roughly
+coincides with this version.
+
 0.0.1
 -----
 
