@@ -119,7 +119,7 @@ class ExtractArgsTests(SynchronousTestCase):
         an empty list of optional arguments.
 
         """
-        def f(namespace): pass
+        def f(namespace): pass  # pragma: no cover
         mandatory, optional = _extractArgs(f)
         self.assertEqual(mandatory, [])
         self.assertEqual(optional, [])
@@ -131,7 +131,7 @@ class ExtractArgsTests(SynchronousTestCase):
         arguments) works correctly.
 
         """
-        def f(namespace, a=1, b=2, c=3): pass
+        def f(namespace, a=1, b=2, c=3): pass  # pragma: no cover
 
         mandatory, optional = _extractArgs(f)
         self.assertEqual(mandatory, [])
@@ -143,7 +143,7 @@ class ExtractArgsTests(SynchronousTestCase):
         argument as well as some mandatory arguments works correctly.
 
         """
-        def f(namespace, a, b, c): pass
+        def f(namespace, a, b, c): pass  # pragma: no cover
         mandatory, optional = _extractArgs(f)
         self.assertEqual(mandatory, ["a", "b", "c"])
         self.assertEqual(optional, [])
@@ -156,7 +156,7 @@ class ExtractArgsTests(SynchronousTestCase):
 
         Optional arguments that start with an underscore are ignored.
         """
-        def f(namespace, a, b, c, d=1, _e=2): pass
+        def f(namespace, a, b, c, d=1, _e=2): pass  # pragma: no cover
         mandatory, optional = _extractArgs(f)
         self.assertEqual(mandatory, ["a", "b", "c"])
         self.assertEqual(optional, [("d", 1)])
