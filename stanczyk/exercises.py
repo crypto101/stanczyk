@@ -7,7 +7,7 @@ def getExercises(namespace, solved=False):
     """Gets some exercises that are currently avaialble to you.
 
     """
-    d = _getRemote(namespace).callRemote(GetExercises, solved=False)
+    d = _getRemote(namespace).callRemote(GetExercises, solved=solved)
     d.addCallback(_displayExercisesTable, namespace)
 
     return None
