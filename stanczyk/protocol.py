@@ -18,8 +18,8 @@ class Protocol(multiplexing.ProxyingAMPLocator, amp.AMP):
         """Notifies the user that they have completed an exercise.
 
         """
-        template = "\nCongratulations! You have solved the {} excercise ({})."
-        line = template.format(identifier, title)
+        line = (u"\nCongratulations! You have solved the {} excercise ({})."
+                .format(identifier, title).encode("utf-8"))
         self.namespace["manhole"].overwriteLine(line)
         return {}
 
