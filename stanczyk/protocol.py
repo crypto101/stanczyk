@@ -41,6 +41,9 @@ def connect(namespace, _reactor=reactor):
     """Connects to the Crypto 101 exercise server.
 
     """
+    if "remote" in namespace:
+        raise RuntimeError("You're already connected.")
+
     endpoint = _makeEndpoint(_reactor)
     d = endpoint.connect(Factory(namespace))
     d.addCallback(_storeRemote, namespace=namespace)

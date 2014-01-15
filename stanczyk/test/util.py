@@ -4,13 +4,20 @@
 from twisted.internet.defer import Deferred
 
 
-class ConnectedCommandTestMixin(object):
+class CommandTestMixin(object):
+    def setUp(self):
+        self.manhole = FakeManhole()
+        self.namespace = {"manhole": self.manhole}
+
+
+
+class ConnectedCommandTestMixin(CommandTestMixin):
     command, kwargs = None, {}
 
     def setUp(self):
+        CommandTestMixin.setUp(self)
         self.remote = FakeRemote()
-        self.manhole = FakeManhole()
-        self.namespace = {"remote": self.remote, "manhole": self.manhole}
+        self.namespace["remote"] = self.remote
 
 
     def test_mustBeConnected(self):
