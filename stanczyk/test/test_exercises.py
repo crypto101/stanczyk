@@ -1,6 +1,7 @@
 from clarent.exercise import GetExercises, GetExerciseDetails
 from stanczyk.exercises import getExercises, getExerciseDetails
-from stanczyk.test.util import CommandTests
+from stanczyk.test.util import ConnectedCommandTestMixin
+from twisted.trial.unittest import SynchronousTestCase
 
 
 EXPECTED_TABLE = """
@@ -25,7 +26,9 @@ The description.
 
 
 
-class GetExercisesTests(CommandTests):
+class GetExercisesTests(ConnectedCommandTestMixin, SynchronousTestCase):
+    command = staticmethod(getExercises)
+
     def test_getExercises(self):
         """The exercise getting command gets unsovled exercises by default,
         and then pretty-prints them to the terminal. It returns None.
@@ -56,7 +59,10 @@ class GetExercisesTests(CommandTests):
 
 
 
-class GetExerciseDetailsTests(CommandTests):
+class GetExerciseDetailsTests(ConnectedCommandTestMixin, SynchronousTestCase):
+    command = staticmethod(getExerciseDetails)
+    kwargs = {"identifier": "xyzzy"}
+
     def test_getExerciseDetails(self):
         """The exercise detail getting command gets the details of the
         exercise specified by identifier. It pretty-prints the result

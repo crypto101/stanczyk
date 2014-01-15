@@ -2,14 +2,23 @@
 
 """
 from twisted.internet.defer import Deferred
-from twisted.trial.unittest import SynchronousTestCase
 
 
-class CommandTests(SynchronousTestCase):
+class ConnectedCommandTestMixin(object):
+    command, kwargs = None, {}
+
     def setUp(self):
         self.remote = FakeRemote()
         self.manhole = FakeManhole()
         self.namespace = {"remote": self.remote, "manhole": self.manhole}
+
+
+    def test_mustBeConnected(self):
+        """Running the command before being connected raises RuntimeError.
+
+        """
+        self.assertRaises(RuntimeError,
+                          self.command, namespace={}, **self.kwargs)
 
 
 
