@@ -1,5 +1,5 @@
-from clarent.exercise import GetExercises
-from stanczyk.exercises import getExercises
+from clarent.exercise import GetExercises, GetExerciseDetails
+from stanczyk.exercises import getExercises, getExerciseDetails
 from stanczyk.test.util import CommandTests
 
 
@@ -12,6 +12,16 @@ EXPECTED_TABLE = """
 | 'two'      | Title two |
 +------------+-----------+
 """.strip()
+
+
+EXPECTED_DETAILS = """
+
+=====
+Title
+=====
+
+The description.
+""".rstrip()
 
 
 
@@ -43,3 +53,27 @@ class GetExercisesTests(CommandTests):
 
         self.assertEqual(self.remote.command, GetExercises)
         self.assertEqual(self.remote.kwargs, {"solved": True})
+
+
+
+class GetExerciseDetailsTests(CommandTests):
+    def test_getExerciseDetails(self):
+        """The exercise detail getting command gets the details of the
+        exercise specified by identifier. It pretty-prints the result
+        to the terminal. It returns None.
+
+        """
+        identifier, title, description = "xyz", "Title", "The description."
+
+        result = getExerciseDetails(identifier, namespace=self.namespace)
+        self.assertIdentical(result, None)
+
+        self.assertEqual(self.remote.command, GetExerciseDetails)
+        self.assertEqual(self.remote.kwargs, {"identifier": identifier})
+
+        self.remote.deferred.callback({
+            "identifier": identifier,
+            "title": title,
+            "description": description
+        })
+        self.assertEqual(self.manhole.line, EXPECTED_DETAILS)
