@@ -1,5 +1,6 @@
 from clarent import certificate, exercise, path
-from twisted.internet import endpoints, protocol, reactor
+from twisted.internet import protocol, reactor
+from twisted.internet.endpoints import SSL4ClientEndpoint
 from twisted.protocols import amp
 from txampext import multiplexing
 
@@ -56,5 +57,12 @@ def _storeRemote(remote, namespace):
 
 
 def _makeEndpoint(reactor):
+    """Creates a suitable endpoint with the given reactor.
+
+    Uses clarent to create a context factory using the default data
+    path, and then creates a SSL client endpoint with that context
+    factory.
+
+    """
     ctxFactory = certificate.getContextFactory(path.getDataPath())
-    return endpoints.SSL4ClientEndpoint(reactor, "localhost", 4430, ctxFactory)
+    return SSL4ClientEndpoint(reactor, "localhost", 4430, ctxFactory)
