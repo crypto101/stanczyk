@@ -68,3 +68,19 @@ class ConnectTests(CommandTestMixin, SynchronousTestCase):
         """
         namespace = {"remote": FakeRemote()}
         self.assertRaises(RuntimeError, connect, namespace=namespace)
+
+
+    def test_unregistered(self):
+        """When the user has not yet created any credentials, a useful error
+        message is displayed.
+
+        """
+        def raiser(_path):
+            raise IOError(ENOENT, "No such file or directory: '/yeah/ok/w/e'")
+        self.patch(certificate, "getContextFactory", raiser)
+
+        result = connect(namespace=self.namespace)
+        self.assertIdentical(result, None)
+
+        self.assertEqual(self.manhole.line, "Couldn't find your credentials. "
+                         "Did you call 'makeCredentials'?")

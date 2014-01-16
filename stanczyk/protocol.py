@@ -44,7 +44,13 @@ def connect(namespace, _reactor=reactor):
     if "remote" in namespace:
         raise RuntimeError("You're already connected.")
 
-    endpoint = _makeEndpoint(_reactor)
+    try:
+        endpoint = _makeEndpoint(_reactor)
+    except IOError:
+        namespace["manhole"].overwriteLine("Couldn't find your credentials. "
+                                           "Did you call 'makeCredentials'?")
+        return None
+
     d = endpoint.connect(Factory(namespace))
     d.addCallback(_storeRemote, namespace=namespace)
 
