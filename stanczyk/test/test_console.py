@@ -1,27 +1,26 @@
 from stanczyk import consoleFunctions
 from stanczyk.console import LineKillingConsoleManhole, Protocol, _extractArgs
-from twisted.conch.insults.insults import ServerProtocol
-from twisted.test.proto_helpers import StringTransport
+from twisted.conch.insults.helper import TerminalBuffer
 from twisted.trial.unittest import SynchronousTestCase
 
 
 class TerminalSetUp(object):
     """Set-up for in-memory terminal testing.
 
+
     """
     protocolClass = None
 
     def setUp(self):
-        self.transport = StringTransport()
-        self.terminalTransport = ServerProtocol()
+        self.transport = TerminalBuffer()
         self.protocol = self.protocolClass()
-        self.terminalTransport.protocolFactory = lambda: self.protocol
-        self.factory = self.terminalTransport.factory = object()
-        self.terminalTransport.makeConnection(self.transport)
-
+        self.protocol.makeConnection(self.transport)
 
 
 class LineKillingTests(TerminalSetUp, SynchronousTestCase):
+    """Tests for the colored manhole with line killing support.
+
+    """
     protocolClass = LineKillingConsoleManhole
 
     def test_killLine(self):
@@ -29,15 +28,17 @@ class LineKillingTests(TerminalSetUp, SynchronousTestCase):
         the terminal, as well as trimming the line buffer.
 
         """
-        self.protocol.lineBuffer = list("abcdef")
-        self.protocol.lineBufferIndex = 3
+        for x in list("abcdef") + [self.transport.LEFT_ARROW] * 3:
+            self.protocol.keystrokeReceived(x, None)
+
         self.assertEqual(self.protocol.currentLineBuffer(), ("abc", "def"))
 
-        self.transport.clear()
         self.protocol.keystrokeReceived("\v", None)
 
         self.assertEqual(self.protocol.currentLineBuffer(), ("abc", ""))
-        self.assertEqual(self.transport.value(), "\x1b[K")
+
+        restOfLine = self.transport.lines[self.transport.y][self.transport.x:]
+        self.assertTrue(all(c is self.transport.void for (c, _) in restOfLine))
 
 
 
@@ -55,11 +56,7 @@ class ProtocolLineKillingTests(LineKillingTests):
         position, MOTD printed, and the input line drawn.
 
         """
-        allBytes = self.transport.value()
-        _beforeClear, afterClear = allBytes.split(ERASE_DISPLAY, 1)
-        beforeHome, afterHome = afterClear.split(CURSOR_HOME, 1)
-        self.assertEqual(beforeHome, "")
-        self.assertEqual(afterHome, expectedAfterHome)
+        self.assertEqual(str(self.transport), expectedSession)
 
 
     def test_consoleFunctions(self):
@@ -82,10 +79,7 @@ class ProtocolLineKillingTests(LineKillingTests):
 
 
 
-ERASE_DISPLAY = '\x1b[2J'
-CURSOR_HOME = '\x1b[H'
-
-expectedAfterHome = "\r\n".join("""
+expectedSession = """
 Welcome to the Crypto 101 console client!
 
 
@@ -108,7 +102,7 @@ The following commands are available:
 |                                      | identifier.                          |
 +--------------------------------------+--------------------------------------+
 
-(Crypto101) >>> """.split("\n"))
+(Crypto101) >>> """
 
 
 
