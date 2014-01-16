@@ -42,11 +42,27 @@ class LineKillingTests(TerminalSetUp, SynchronousTestCase):
 
 
 
+def notVoids(line):
+    """Returns all non-void pairs in a TerminalBuffer line.
+
+    """
+    return ((c, a) for (c, a) in line if c is not TerminalBuffer.void)
+
+
+
+def chars(line):
+    """Returns the chars in a TerminalBuffer line.
+
+    """
+    return "".join(c for (c, _) in notVoids(line))
+
+
+
 def isEmpty(line):
     """Checks if part of a TerminalBuffer line is empty.
 
     """
-    return all(c is TerminalBuffer.void for (c, _) in line)
+    return not chars(line)
 
 
 
@@ -95,16 +111,39 @@ class ProtocolLineKillingTests(LineKillingTests):
         for char in "abcdef":
             self.protocol.keystrokeReceived(char, None)
 
-        currentLine = self.transport.lines[self.transport.y]
-        self.assertFalse(isEmpty(currentLine))
+        self.assertTrue(self.getLine())
 
         oldCoords = self.transport.x, self.transport.y
         self.protocol.killWholeLine()
         self.assertEqual(self.transport.x, 0)
         self.assertEqual(self.transport.y, oldCoords[1])
+        self.assertFalse(self.getLine())
 
-        currentLine = self.transport.lines[self.transport.y]
-        self.assertTrue(isEmpty(currentLine))
+
+    def getLine(self, idx=None):
+        """Gets the line with given from the terminal transport. If
+        unspecified, gets the current line.
+
+        """
+        if idx is None:
+            idx = self.transport.y
+
+        return chars(self.transport.lines[idx])
+
+
+    def test_overwriteLine(self):
+        """The overwriteLine method clears the current line, writes the given
+        line, moves the cursor to the next line, kills it, and writes an input
+        line there.
+
+        """
+        for char in "abcdef":
+            self.protocol.keystrokeReceived(char, None)
+
+        self.protocol.overwriteLine("the new line")
+
+        self.assertEqual(self.getLine(self.transport.y - 1), "the new line")
+        self.assertEqual(self.getLine(), self.protocol.ps[0] + "abcdef")
 
 
 
