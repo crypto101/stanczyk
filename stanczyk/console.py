@@ -16,10 +16,13 @@ class LineKillingConsoleManhole(ConsoleManhole):
     """
     def connectionMade(self):
         ConsoleManhole.connectionMade(self)
-        self.keyHandlers[CTRL_K] = self._killLine
+        self.keyHandlers[CTRL_K] = self._killRestOfLine
 
 
-    def _killLine(self):
+    def _killRestOfLine(self):
+        """Kills the rest of the line, like Emacs' kill-line.
+
+        """
         self.terminal.eraseToLineEnd()
         del self.lineBuffer[self.lineBufferIndex:]
 
@@ -80,17 +83,17 @@ class Protocol(LineKillingConsoleManhole):
         and then redraws the input line.
 
         """
-        yield self.killLine()
+        yield self.killWholeLine()
         self.terminal.write(line)
         self.terminal.nextLine()
-        yield self.killLine()
+        yield self.killWholeLine()
         self.drawInputLine()
 
 
     @inlineCallbacks
-    def killLine(self):
-        """Erases the current line and moves the cursor to the beginning of
-        it.
+    def killWholeLine(self):
+        """Erases the entire current line and moves the cursor to the
+        beginning of it.
 
         """
         _x, y = yield self.terminal.reportCursorPosition()

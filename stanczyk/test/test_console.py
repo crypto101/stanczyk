@@ -86,9 +86,10 @@ class ProtocolLineKillingTests(LineKillingTests):
         self.assertEqual(gotFuncs, set(consoleFunctions))
 
 
-    def test_killLine(self):
-        """The killLine method finds the current cursor position, moves to
-        the start of that line, and then erases the rest of the line.
+    def test_killWholeLine(self):
+        """The killWholeLine method finds the current cursor position, moves
+        to the start of that line, and then erases the rest of the
+        line.
 
         """
         for char in "abcdef":
@@ -98,7 +99,7 @@ class ProtocolLineKillingTests(LineKillingTests):
         self.assertFalse(isEmpty(currentLine))
 
         oldCoords = self.transport.x, self.transport.y
-        self.protocol.killLine()
+        self.protocol.killWholeLine()
         self.assertEqual(self.transport.x, 0)
         self.assertEqual(self.transport.y, oldCoords[1])
 
