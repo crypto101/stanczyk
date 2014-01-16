@@ -1,3 +1,5 @@
+from clarent import certificate
+from errno import ENOENT
 from stanczyk.protocol import connect, Factory, Protocol
 from stanczyk.test.util import CommandTestMixin, FakeManhole, FakeRemote
 from twisted.test.proto_helpers import MemoryReactor
@@ -34,7 +36,15 @@ class ProtocolTests(SynchronousTestCase):
 
 class ConnectTests(CommandTestMixin, SynchronousTestCase):
     def test_connect(self):
+        """Attempts to connect. The client already has credentials in the
+        appropriate place, and the client is not connected already.
+        Asserts that stanczyk attempts to connect to the appropriate
+        place.
+
+        """
         reactor = MemoryReactor()
+        fakeCtxFactory = object()
+        self.patch(certificate, "getContextFactory", lambda _path: fakeCtxFactory)
 
         self.assertNotIn("remote", self.namespace)
 
