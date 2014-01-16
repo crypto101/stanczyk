@@ -2,6 +2,7 @@
 
 """
 from twisted.internet.defer import Deferred
+from txampext.multiplexing import ProxyingAMPLocator
 
 
 class CommandTestMixin(object):
@@ -29,8 +30,13 @@ class ConnectedCommandTestMixin(CommandTestMixin):
 
 
 
-class FakeRemote(object):
+class FakeRemote(ProxyingAMPLocator):
+    """A fake connected AMP remote.
+
+    Supports the proxying AMP locator API.
+    """
     def __init__(self):
+        ProxyingAMPLocator.__init__(self)
         self.command = self.kwargs = self.deferred = None
 
 
