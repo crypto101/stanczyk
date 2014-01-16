@@ -38,7 +38,15 @@ class LineKillingTests(TerminalSetUp, SynchronousTestCase):
         self.assertEqual(self.protocol.currentLineBuffer(), ("abc", ""))
 
         restOfLine = self.transport.lines[self.transport.y][self.transport.x:]
-        self.assertTrue(all(c is self.transport.void for (c, _) in restOfLine))
+        self.assertTrue(isEmpty(restOfLine))
+
+
+
+def isEmpty(line):
+    """Checks if part of a TerminalBuffer line is empty.
+
+    """
+    return all(c is TerminalBuffer.void for (c, _) in line)
 
 
 
@@ -76,6 +84,26 @@ class ProtocolLineKillingTests(LineKillingTests):
                 gotFuncs.add(obj.func)
 
         self.assertEqual(gotFuncs, set(consoleFunctions))
+
+
+    def test_killLine(self):
+        """The killLine method finds the current cursor position, moves to
+        the start of that line, and then erases the rest of the line.
+
+        """
+        for char in "abcdef":
+            self.protocol.keystrokeReceived(char, None)
+
+        currentLine = self.transport.lines[self.transport.y]
+        self.assertFalse(isEmpty(currentLine))
+
+        oldCoords = self.transport.x, self.transport.y
+        self.protocol.killLine()
+        self.assertEqual(self.transport.x, 0)
+        self.assertEqual(self.transport.y, oldCoords[1])
+
+        currentLine = self.transport.lines[self.transport.y]
+        self.assertTrue(isEmpty(currentLine))
 
 
 
