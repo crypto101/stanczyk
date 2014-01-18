@@ -2,8 +2,7 @@ from clarent import certificate, path
 
 
 def makeCredentials(email, namespace):
-    """Creates new credentials for connecting to the Crypto 101 exercise
-    servers.
+    """Creates credentials to connect to the exercise server.
 
     If the credentials already exist, raise
 

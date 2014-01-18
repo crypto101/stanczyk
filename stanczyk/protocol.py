@@ -38,7 +38,7 @@ class Factory(protocol.ReconnectingClientFactory):
 
 
 def connect(namespace, _reactor=reactor):
-    """Connects to the Crypto 101 exercise server.
+    """Connect to the exercise server.
 
     """
     if "remote" in namespace:

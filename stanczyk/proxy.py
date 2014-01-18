@@ -4,8 +4,7 @@ from txampext.multiplexing import ProxyingFactory
 
 
 def connectProxy(identifier, namespace, _reactor=reactor):
-    """Start listening on some free local port; connections will be
-    proxied to the virtual server with the given identifier.
+    """Creates a virtual connection to a server.
 
     """
     endpoint = endpoints.TCP4ServerEndpoint(_reactor, 0, interface="localhost")

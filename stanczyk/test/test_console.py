@@ -155,8 +155,10 @@ The following commands are available:
 +--------------------------------------+--------------------------------------+
 |               Command                |             Description              |
 +======================================+======================================+
-| connect()                            | Connects to the Crypto 101 exercise  |
-|                                      | server.                              |
+| makeCredentials(email)               | Creates credentials to connect to    |
+|                                      | the exercise server.                 |
++--------------------------------------+--------------------------------------+
+| connect()                            | Connect to the exercise server.      |
 +--------------------------------------+--------------------------------------+
 | getExercises(solved=False)           | Gets some exercises that are         |
 |                                      | currently avaialble to you.          |
@@ -164,10 +166,8 @@ The following commands are available:
 | getExerciseDetails(identifier)       | Shows the detailed description of a  |
 |                                      | particular excerise.                 |
 +--------------------------------------+--------------------------------------+
-| connectProxy(identifier)             | Start listening on some free local   |
-|                                      | port; connections will be proxied to |
-|                                      | the virtual server with the given    |
-|                                      | identifier.                          |
+| connectProxy(identifier)             | Creates a virtual connection to a    |
+|                                      | server.                              |
 +--------------------------------------+--------------------------------------+
 
 (Crypto101) >>> """
