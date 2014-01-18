@@ -22,6 +22,13 @@ The long version: see the extra notes for merlyn_.
 Changelog
 =========
 
+0.1.0
+-----
+
+Huge improvements to test suite. Also added support for creating
+credentials, so you can actually use stanczyk and only stanczyk
+without ever having to touch any internals yourself.
+
 0.0.2
 -----
 
